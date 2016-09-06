@@ -100,7 +100,7 @@ void drawBox( int x, int y )
     glColor3ub( red, green, blue );
    
     p[0] = x;
-    p[1] = y;  
+    p[1] = WINDOW_MAX_Y - y;  
     
         glBegin(GL_POINTS);
             glVertex2fv(p); 
