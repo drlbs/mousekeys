@@ -99,12 +99,16 @@ void drawBox( int x, int y )
 
     glColor3ub( red, green, blue );
 
+    // Added code to print window coordinates and world coordinates
+    
+    printf ("%d   %d (window coordinates) ", x, WINDOW_MAX_Y - y );
+
     // I switch the mouse coordinate below and...
 
     p[0] = x;
     p[1] = WINDOW_MAX_Y - y;  
 
-    // Then use the scaling equations we talked about in class...
+    // then use the scaling equations we talked about in class...
 
     // Note, since x and y have to be between 0 and WINDOW_MAX_X and WINDOW_MAX_Y respectively, the coding
     // is actually a little simpler. 
@@ -115,6 +119,9 @@ void drawBox( int x, int y )
 
     p[1] = WORLD_COORDINATE_MIN_Y +  p[1] / WINDOW_MAX_Y * 
                                     (WORLD_COORDINATE_MAX_Y - WORLD_COORDINATE_MIN_Y);
+
+   
+    printf ("\t  %f   %f (world coordinates) \n", p[0], p[1] );
 
     glBegin(GL_POINTS);
     glVertex2fv(p); 
@@ -152,19 +159,19 @@ void mouse( int button, int state, int x, int y )
 
   if ( button == GLUT_RIGHT_BUTTON && state == GLUT_DOWN )
      {
-        printf ("%d   %d\n", x, y);
+        //printf ("%d   %d\n", x, y);
         drawBox( x, y );
      }
 
   if ( button == GLUT_LEFT_BUTTON && state == GLUT_DOWN )
      {
-        printf ("%d   %d\n", x, y);
+        //printf ("%d   %d\n", x, y);
         eraseBox( x, y );
      }
   
   if ( button == GLUT_MIDDLE_BUTTON && state == GLUT_DOWN )
      {
-        printf ("%d   %d\n", x, y);
+        //printf ("%d   %d\n", x, y);
         clearBox();
      }
 }
