@@ -106,11 +106,11 @@ void drawBox( int x, int y )
 
     // Then use the scaling equations we talked about in class...
 
-    p[0] = WORLD_COORDINATE_MIN_X + (WINDOW_MAX_X - p[0]) / WINDOW_MAX_X * 
+    p[0] = WORLD_COORDINATE_MIN_X +  p[0] / WINDOW_MAX_X * 
                                     (WORLD_COORDINATE_MAX_X - WORLD_COORDINATE_MIN_X);
 
 
-    p[1] = WORLD_COORDINATE_MIN_Y + (WINDOW_MAX_Y - p[1]) / WINDOW_MAX_Y * 
+    p[1] = WORLD_COORDINATE_MIN_Y +  p[1] / WINDOW_MAX_Y * 
                                     (WORLD_COORDINATE_MAX_Y - WORLD_COORDINATE_MIN_Y);
 
     glBegin(GL_POINTS);
