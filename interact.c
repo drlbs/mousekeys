@@ -14,15 +14,15 @@ int COLORS_DEFINED;
 
 const int WINDOW_POSITION_X = 100;
 const int WINDOW_POSITION_Y = 100;
-const int WINDOW_MAX_X = 400;
-const int WINDOW_MAX_Y = 400;
+const int WINDOW_MAX_X = 500;
+const int WINDOW_MAX_Y = 500;
 
 // Specify the coordinate ranges for the world coordinates in the 2D Frame
 
-const float WORLD_COORDINATE_MIN_X = 0.0;
-const float WORLD_COORDINATE_MAX_X = 400.0;
-const float WORLD_COORDINATE_MIN_Y = 0.0;
-const float WORLD_COORDINATE_MAX_Y = 400.0;
+const float WORLD_COORDINATE_MIN_X = 200.0;
+const float WORLD_COORDINATE_MAX_X = 2400.0;
+const float WORLD_COORDINATE_MIN_Y = 200.0;
+const float WORLD_COORDINATE_MAX_Y = 2400.0;
 
 
 void myglutInit( int argc, char** argv )
@@ -96,16 +96,27 @@ void drawBox( int x, int y )
 {
     typedef GLfloat point[2];     
     point p;
- 
+
     glColor3ub( red, green, blue );
-   
+
+    // I switch the mouse coordinate below and...
+
     p[0] = x;
     p[1] = WINDOW_MAX_Y - y;  
-    
-        glBegin(GL_POINTS);
-            glVertex2fv(p); 
-        glEnd();
-        glFlush();
+
+    // Then use the scaling equations we talked about in class...
+
+    p[0] = WORLD_COORDINATE_MIN_X + (WINDOW_MAX_X - p[0]) / WINDOW_MAX_X * 
+                                    (WORLD_COORDINATE_MAX_X - WORLD_COORDINATE_MIN_X);
+
+
+    p[1] = WORLD_COORDINATE_MIN_Y + (WINDOW_MAX_Y - p[1]) / WINDOW_MAX_Y * 
+                                    (WORLD_COORDINATE_MAX_Y - WORLD_COORDINATE_MIN_Y);
+
+    glBegin(GL_POINTS);
+    glVertex2fv(p); 
+    glEnd();
+    glFlush();
 }
 
 
