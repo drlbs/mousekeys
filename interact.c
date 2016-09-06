@@ -106,6 +106,9 @@ void drawBox( int x, int y )
 
     // Then use the scaling equations we talked about in class...
 
+    // Note, since x and y have to be between 0 and WINDOW_MAX_X and WINDOW_MAX_Y respectively, the coding
+    // is actually a little simpler. 
+
     p[0] = WORLD_COORDINATE_MIN_X +  p[0] / WINDOW_MAX_X * 
                                     (WORLD_COORDINATE_MAX_X - WORLD_COORDINATE_MIN_X);
 
