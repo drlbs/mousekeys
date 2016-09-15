@@ -14,8 +14,9 @@ int COLORS_DEFINED;
 
 const int WINDOW_POSITION_X = 100;
 const int WINDOW_POSITION_Y = 100;
-const int WINDOW_MAX_X = 500;
-const int WINDOW_MAX_Y = 500;
+
+int WINDOW_MAX_X = 500;
+int WINDOW_MAX_Y = 500;
 
 // Specify the coordinate ranges for the world coordinates in the 2D Frame
 
@@ -55,6 +56,16 @@ void myInit(void)
       glMatrixMode(GL_MODELVIEW);
 }
 
+void reshape ( int newWidth, int newHeight ) {
+
+      glMatrixMode( GL_PROJECTION );
+      glLoadIdentity ();
+      gluOrtho2D (0.0, (GLdouble) newWidth, 0.0, (GLdouble) newHeight );
+      glClear (GL_COLOR_BUFFER_BIT);
+      WINDOW_MAX_X = newWidth;
+      WINDOW_MAX_Y = newHeight; 
+
+}
 
 void display( void )
 {
