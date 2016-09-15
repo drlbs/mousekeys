@@ -92,7 +92,9 @@ void reshape ( int newWidth, int newHeight ) {
 
       glMatrixMode(GL_MODELVIEW);
 
+      glViewport( 0, 0, newWidth, newHeight);
       glClear (GL_COLOR_BUFFER_BIT);
+      
       SCALABLE_WINDOW_MAX_X = newWidth;
       SCALABLE_WINDOW_MAX_Y = newHeight; 
 
