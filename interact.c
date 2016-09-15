@@ -15,8 +15,11 @@ int COLORS_DEFINED;
 const int WINDOW_POSITION_X = 100;
 const int WINDOW_POSITION_Y = 100;
 
-int WINDOW_MAX_X = 500;
-int WINDOW_MAX_Y = 500;
+const int WINDOW_MAX_X = 500;
+const int WINDOW_MAX_Y = 500;
+
+int SCALABLE_WINDOW_MAX_X = 500;
+int SCALABLE_WINDOW_MAX_Y = 500;
 
 // Specify the coordinate ranges for the world coordinates in the 2D Frame
 
@@ -26,6 +29,9 @@ float WORLD_COORDINATE_MIN_Y = 200.0;
 float WORLD_COORDINATE_MAX_Y = 2400.0;
 
 float scaleX, scaleY; // Used to properly scale viewport undergoing a change
+
+/*** END of variables with Global scope ***/
+
 
 void myglutInit( int argc, char** argv )
 {
@@ -61,28 +67,34 @@ void reshape ( int newWidth, int newHeight ) {
 
       float SCALED_MAX_X, SCALED_MAX_Y;
 
-      glMatrixMode( GL_PROJECTION );
-      glLoadIdentity ();
-    //  gluOrtho2D (0.0, (GLdouble) newWidth, 0.0, (GLdouble) newHeight );
-
       scaleX = (float) newWidth / (float) WINDOW_MAX_X;
       scaleY = (float) newHeight / (float) WINDOW_MAX_Y;
 
-      printf ("In reshape with scaleX = %f, scaleY = %f\n", scaleX, scaleY );          
+      printf ("In reshape with scaleX = %f, scaleY = %f ", scaleX, scaleY ); 
+         
       SCALED_MAX_X = WORLD_COORDINATE_MIN_X + 
                        scaleX * (WORLD_COORDINATE_MAX_X - WORLD_COORDINATE_MIN_X);
  
       SCALED_MAX_Y = WORLD_COORDINATE_MIN_Y + 
                        scaleY * (WORLD_COORDINATE_MAX_Y - WORLD_COORDINATE_MIN_Y);
 
+      printf ("New MaxX = %f, New MaxY = %f\n", SCALED_MAX_X, SCALED_MAX_Y ); 
+
+      glMatrixMode( GL_PROJECTION );
+      glLoadIdentity ();
+
+      printf("Calling gluOrtho2D with %f, %f, %f, %f\n",
+                     WORLD_COORDINATE_MIN_X, SCALED_MAX_X,
+                     WORLD_COORDINATE_MIN_Y, SCALED_MAX_Y);
+
       gluOrtho2D(WORLD_COORDINATE_MIN_X, SCALED_MAX_X,
                  WORLD_COORDINATE_MIN_Y, SCALED_MAX_Y);
 
       glMatrixMode(GL_MODELVIEW);
 
-    //  glClear (GL_COLOR_BUFFER_BIT);
-      WINDOW_MAX_X = newWidth;
-      WINDOW_MAX_Y = newHeight; 
+      glClear (GL_COLOR_BUFFER_BIT);
+      SCALABLE_WINDOW_MAX_X = newWidth;
+      SCALABLE_WINDOW_MAX_Y = newHeight; 
 
 }
 
@@ -131,12 +143,12 @@ void drawBox( int x, int y )
 
     // Added code to print window coordinates and world coordinates
     
-    printf ("%d   %d (window coordinates) ", x, WINDOW_MAX_Y - y );
+    printf ("%d   %d (window coordinates) ", x, SCALABLE_WINDOW_MAX_Y - y );
 
     // I switch the mouse coordinate below and...
 
     p[0] = x;
-    p[1] = WINDOW_MAX_Y - y;  
+    p[1] = SCALABLE_WINDOW_MAX_Y - y;  
 
     // then use the scaling equations we talked about in class...
 
@@ -223,8 +235,8 @@ int main(int argc, char** argv)
     
     glutMouseFunc(mouse);  /* Define Mouse Handler */
     glutKeyboardFunc(keyboard); /* Define Keyboard Handler */
-    glutDisplayFunc(display); /* Display callback invoked when window opened */
     glutReshapeFunc(reshape); /* This should call the function to rescale */
+    glutDisplayFunc(display); /* Display callback invoked when window opened */
     glutMainLoop(); /* enter event loop */
 }
 
