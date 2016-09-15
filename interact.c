@@ -20,11 +20,12 @@ int WINDOW_MAX_Y = 500;
 
 // Specify the coordinate ranges for the world coordinates in the 2D Frame
 
-const float WORLD_COORDINATE_MIN_X = 200.0;
-const float WORLD_COORDINATE_MAX_X = 2400.0;
-const float WORLD_COORDINATE_MIN_Y = 200.0;
-const float WORLD_COORDINATE_MAX_Y = 2400.0;
+float WORLD_COORDINATE_MIN_X = 200.0;
+float WORLD_COORDINATE_MAX_X = 2400.0;
+float WORLD_COORDINATE_MIN_Y = 200.0;
+float WORLD_COORDINATE_MAX_Y = 2400.0;
 
+float scaleX, scaleY; // Used to properly scale viewport undergoing a change
 
 void myglutInit( int argc, char** argv )
 {
@@ -58,10 +59,28 @@ void myInit(void)
 
 void reshape ( int newWidth, int newHeight ) {
 
+      float SCALED_MAX_X, SCALED_MAX_Y;
+
       glMatrixMode( GL_PROJECTION );
       glLoadIdentity ();
-      gluOrtho2D (0.0, (GLdouble) newWidth, 0.0, (GLdouble) newHeight );
-      glClear (GL_COLOR_BUFFER_BIT);
+    //  gluOrtho2D (0.0, (GLdouble) newWidth, 0.0, (GLdouble) newHeight );
+
+      scaleX = (float) newWidth / (float) WINDOW_MAX_X;
+      scaleY = (float) newHeight / (float) WINDOW_MAX_Y;
+
+      printf ("In reshape with scaleX = %f, scaleY = %f\n", scaleX, scaleY );          
+      SCALED_MAX_X = WORLD_COORDINATE_MIN_X + 
+                       scaleX * (WORLD_COORDINATE_MAX_X - WORLD_COORDINATE_MIN_X);
+ 
+      SCALED_MAX_Y = WORLD_COORDINATE_MIN_Y + 
+                       scaleY * (WORLD_COORDINATE_MAX_Y - WORLD_COORDINATE_MIN_Y);
+
+      gluOrtho2D(WORLD_COORDINATE_MIN_X, SCALED_MAX_X,
+                 WORLD_COORDINATE_MIN_Y, SCALED_MAX_Y);
+
+      glMatrixMode(GL_MODELVIEW);
+
+    //  glClear (GL_COLOR_BUFFER_BIT);
       WINDOW_MAX_X = newWidth;
       WINDOW_MAX_Y = newHeight; 
 
@@ -205,6 +224,7 @@ int main(int argc, char** argv)
     glutMouseFunc(mouse);  /* Define Mouse Handler */
     glutKeyboardFunc(keyboard); /* Define Keyboard Handler */
     glutDisplayFunc(display); /* Display callback invoked when window opened */
+    glutReshapeFunc(reshape); /* This should call the function to rescale */
     glutMainLoop(); /* enter event loop */
 }
 
